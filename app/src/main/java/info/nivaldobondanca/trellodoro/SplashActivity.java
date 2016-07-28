@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity {
 		// TODO implement this
 		final Random random = new Random();
 		try {
-			Thread.sleep(random.nextInt(4500) + 500);
+			Thread.sleep(random.nextInt(1500) + 500);
 		}
 		catch (InterruptedException ignored) {
 		}
