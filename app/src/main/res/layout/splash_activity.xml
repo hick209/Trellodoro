@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".SplashActivity">
+
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:src="@drawable/bg_splash"
+		android:scaleType="centerCrop"
+		android:contentDescription="@null"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_gravity="center">
+
+		<ImageView
+			android:layout_width="120dp"
+			android:layout_height="120dp"
+			android:layout_gravity="center"
+			android:layout_margin="8dp"
+			android:src="@drawable/ic_trello"
+			android:contentDescription="@string/description_trello"/>
+
+		<FrameLayout
+			android:id="@+id/splash_sceneContainer"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<include layout="@layout/splash_scene_connect"/>
+		</FrameLayout>
+	</LinearLayout>
+</merge>

@@ -3,4 +3,8 @@
 
 	<string name="app_name">Trellodoro</string>
 
+	<string name="description_trello">Trello</string>
+
+	<string name="splash_action_connectToTrello">Connect</string>
+
 </resources>
