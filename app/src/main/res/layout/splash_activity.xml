@@ -30,7 +30,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 
-			<include layout="@layout/splash_scene_connect"/>
+			<include layout="@layout/splash_scene_connecting"/>
 		</FrameLayout>
 	</LinearLayout>
 </merge>
