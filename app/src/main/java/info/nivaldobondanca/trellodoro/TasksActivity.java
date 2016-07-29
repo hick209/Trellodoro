@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -37,6 +40,22 @@ public class TasksActivity extends AppCompatActivity {
 		binding.tabs.setupWithViewPager(binding.pager);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.tasks_activity, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.tasks_menu_settings:
+				// TODO
+				Toast.makeText(TasksActivity.this, "Settings...", Toast.LENGTH_SHORT).show();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 	static class TasksPagerAdapter extends FragmentPagerAdapter {
 		private static final int COUNT = 3;
