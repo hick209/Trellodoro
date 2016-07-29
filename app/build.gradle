@@ -33,8 +33,10 @@ dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 
 	def androidSupportLibVersion = '24.1.1'
+	compile "com.android.support:support-annotations:${androidSupportLibVersion}"
 	compile "com.android.support:appcompat-v7:${androidSupportLibVersion}"
 	compile "com.android.support:design:${androidSupportLibVersion}"
+	compile "com.android.support:cardview-v7:${androidSupportLibVersion}"
 
 	// Unit testing
 	testCompile 'junit:junit:4.12'

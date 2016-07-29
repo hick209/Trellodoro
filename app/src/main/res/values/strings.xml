@@ -7,4 +7,8 @@
 
 	<string name="splash_action_connectToTrello">Connect</string>
 
+	<string name="tasks_tabTitle_todo">To Do</string>
+	<string name="tasks_tabTitle_doing">Doing</string>
+	<string name="tasks_tabTitle_done">Done</string>
+
 </resources>
