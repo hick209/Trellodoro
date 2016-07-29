@@ -25,7 +25,12 @@
 		<item name="android:windowBackground">@drawable/splash_screen</item>
 	</style>
 
-	<style name="SplashTheme" parent="AppTheme.Dark.Fullscreen">
+	<style name="SplashTheme" parent="AppTheme.Dark.Fullscreen"/>
+
+	<style name="TasksTheme" parent="AppTheme"/>
+
+	<style name="SettingsTheme" parent="AppTheme.Dark.Fullscreen">
+		<item name="android:windowBackground">?attr/colorPrimary</item>
 	</style>
 
 </resources>

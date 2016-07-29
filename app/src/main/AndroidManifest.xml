@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="info.nivaldobondanca.trellodoro"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="info.nivaldobondanca.trellodoro">
 
 	<application
 		android:allowBackup="true"
@@ -14,12 +15,18 @@
 			android:theme="@style/SplashTheme.Start">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
-
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".TasksActivity"/>
+		<activity
+			android:name=".TasksActivity"
+			android:theme="@style/TasksTheme"/>
+
+		<activity
+			android:name=".SettingsActivity"
+			android:label="@string/settings_title"
+			android:theme="@style/SettingsTheme"/>
 	</application>
 
 </manifest>

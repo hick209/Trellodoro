@@ -11,7 +11,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -50,8 +49,7 @@ public class TasksActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.tasks_menu_settings:
-				// TODO
-				Toast.makeText(TasksActivity.this, "Settings...", Toast.LENGTH_SHORT).show();
+				startActivity(SettingsActivity.newIntent(this));
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -66,9 +64,9 @@ public class TasksActivity extends AppCompatActivity {
 		public TasksPagerAdapter(Context context, FragmentManager fm) {
 			super(fm);
 			titles = new CharSequence[]{
+					context.getText(R.string.tasks_tabTitle_todo),
 					context.getText(R.string.tasks_tabTitle_doing),
 					context.getText(R.string.tasks_tabTitle_done),
-					context.getText(R.string.tasks_tabTitle_todo),
 			};
 
 			fragments = new Fragment[] {

@@ -13,4 +13,32 @@
 	<string name="tasks_tabTitle_doing">Doing</string>
 	<string name="tasks_tabTitle_done">Done</string>
 
+	<string name="settings_title">Settings</string>
+
+	<string name="settings_board">Board</string>
+	<string name="settings_todo">To Do List</string>
+	<string name="settings_doing">Doing List</string>
+	<string name="settings_done">Done List</string>
+
+
+	<string-array name="mock">
+		<item>Item 1</item>
+		<item>Item 2</item>
+		<item>Item 3</item>
+		<item>Item 4</item>
+		<item>Item 5</item>
+		<item>Item 6</item>
+		<item>Item 7</item>
+		<item>Item 8</item>
+		<item>Item 9</item>
+		<item>Item 10</item>
+		<item>Item 11</item>
+		<item>Item 12</item>
+		<item>Item 13</item>
+		<item>Item 14</item>
+		<item>Item 15</item>
+		<item>Item 16</item>
+		<item>Item 17</item>
+		<item>Item 18</item>
+	</string-array>
 </resources>
