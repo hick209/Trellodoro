@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro;
+package info.nivaldobondanca.trellodoro.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,20 +17,20 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.SettingsActivityBinding;
 
 /**
  * @author Nivaldo Bondança
  */
 public class SettingsActivity extends AppCompatActivity {
-
-	private TrelloBoardsAdapter boardsAdapter;
-	private View viewRoot;
-
 	public static Intent newIntent(Context context) {
 		return new Intent(context, SettingsActivity.class);
 	}
 
+
+	private View viewRoot;
+	private TrelloBoardsAdapter boardsAdapter;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {

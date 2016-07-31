@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro;
+package info.nivaldobondanca.trellodoro.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
@@ -15,11 +14,13 @@ import java.util.Random;
 
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
+import info.nivaldobondanca.trellodoro.OnTaskClickListener;
+import info.nivaldobondanca.trellodoro.viewmodel.TaskViewModel;
 
 /**
  * @author Nivaldo Bondança
  */
-public class TasksFragment extends Fragment {
+public class TasksFragment extends Fragment implements OnTaskClickListener {
 
 	private TasksFragmentBinding binding;
 
@@ -43,23 +44,25 @@ public class TasksFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		binding.tasksList.setAdapter(new TasksAdapter(getContext()));
-		binding.tasksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-				Toast.makeText(getContext(), "Clicked on item " + position, Toast.LENGTH_SHORT).show();
-			}
-		});
+		binding.tasksList.setAdapter(new TasksAdapter(getContext(), this));
 	}
 
-	static class TasksAdapter extends BaseAdapter {
+	@Override
+	public void onTaskClicked(View view, CharSequence cardName) {
+		// TODO
+		Toast.makeText(getContext(), "Clicked on " + cardName, Toast.LENGTH_SHORT).show();
+	}
 
-		private final LayoutInflater inflater;
+
+	static class TasksAdapter extends BaseAdapter {
+		private final LayoutInflater      inflater;
+		private final OnTaskClickListener taskClickListener;
 
 		// XXX temporary
 		private final int count;
 
-		public TasksAdapter(Context context) {
+		public TasksAdapter(Context context, OnTaskClickListener taskClickListener) {
+			this.taskClickListener = taskClickListener;
 			inflater = LayoutInflater.from(context);
 			count = new Random().nextInt(150);
 		}
@@ -91,6 +94,8 @@ public class TasksFragment extends Fragment {
 			final TasksSingleTaskCardBinding binding;
 			if (recycledView == null) {
 				binding = TasksSingleTaskCardBinding.inflate(inflater, container, false);
+				binding.setViewModel(new TaskViewModel(taskClickListener));
+
 				recycledView = binding.getRoot();
 				recycledView.setTag(binding);
 			}
@@ -98,8 +103,7 @@ public class TasksFragment extends Fragment {
 				binding = (TasksSingleTaskCardBinding) recycledView.getTag();
 			}
 
-			// TODO
-			binding.taskTitle.setText(getItem(position));
+			binding.getViewModel().setData(getItem(position));
 
 			return recycledView;
 		}

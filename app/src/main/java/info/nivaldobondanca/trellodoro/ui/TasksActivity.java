@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro;
+package info.nivaldobondanca.trellodoro.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import java.util.Locale;
 
+import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.TasksActivityBinding;
 
 public class TasksActivity extends AppCompatActivity {

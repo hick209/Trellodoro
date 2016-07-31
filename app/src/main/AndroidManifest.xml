@@ -11,7 +11,7 @@
 		android:theme="@style/AppTheme">
 
 		<activity
-			android:name=".SplashActivity"
+			android:name=".ui.SplashActivity"
 			android:theme="@style/SplashTheme.Start">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
@@ -20,11 +20,11 @@
 		</activity>
 
 		<activity
-			android:name=".TasksActivity"
+			android:name=".ui.TasksActivity"
 			android:theme="@style/TasksTheme"/>
 
 		<activity
-			android:name=".SettingsActivity"
+			android:name=".ui.SettingsActivity"
 			android:label="@string/settings_title"
 			android:theme="@style/SettingsTheme"/>
 	</application>

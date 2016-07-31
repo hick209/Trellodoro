@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro;
+package info.nivaldobondanca.trellodoro.ui;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Random;
+
+import info.nivaldobondanca.trellodoro.R;
 
 public class SplashActivity extends AppCompatActivity {
 
