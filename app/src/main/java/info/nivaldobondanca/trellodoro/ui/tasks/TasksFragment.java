@@ -1,7 +1,8 @@
-package info.nivaldobondanca.trellodoro.ui;
+package info.nivaldobondanca.trellodoro.ui.tasks;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Random;
 
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
-import info.nivaldobondanca.trellodoro.OnTaskClickListener;
+import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 import info.nivaldobondanca.trellodoro.viewmodel.TaskViewModel;
 
 /**
@@ -22,10 +25,23 @@ import info.nivaldobondanca.trellodoro.viewmodel.TaskViewModel;
  */
 public class TasksFragment extends Fragment implements OnTaskClickListener {
 
-	private TasksFragmentBinding binding;
+	@IntDef({
+			TASK_LIST_TODO,
+			TASK_LIST_DOING,
+			TASK_LIST_DONE,
+	})
+	@Retention(RetentionPolicy.SOURCE)
+	public @interface TaskList {}
 
-	public static TasksFragment newInstance() {
+	public static final int TASK_LIST_TODO  = 0;
+	public static final int TASK_LIST_DOING = 1;
+	public static final int TASK_LIST_DONE  = 2;
+
+	private static final String ARG_TASK_LIST = "arg.TASK_LIST";
+
+	public static TasksFragment newInstance(@TaskList int taskList) {
 		final Bundle args = new Bundle();
+		args.putInt(ARG_TASK_LIST, taskList);
 		// TODO create the args
 
 		final TasksFragment fragment = new TasksFragment();
@@ -33,6 +49,8 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 		return fragment;
 	}
 
+
+	private TasksFragmentBinding binding;
 
 	@Nullable
 	@Override

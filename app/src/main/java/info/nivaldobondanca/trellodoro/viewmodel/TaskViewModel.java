@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import info.nivaldobondanca.trellodoro.BR;
-import info.nivaldobondanca.trellodoro.OnTaskClickListener;
+import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 
 /**
  * @author Nivaldo Bondança

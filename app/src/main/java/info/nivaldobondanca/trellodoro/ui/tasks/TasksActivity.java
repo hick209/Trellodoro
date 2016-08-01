@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro.ui;
+package info.nivaldobondanca.trellodoro.ui.tasks;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.TasksActivityBinding;
+import info.nivaldobondanca.trellodoro.ui.settings.SettingsActivity;
 
 public class TasksActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro;
+package info.nivaldobondanca.trellodoro.ui;
 
 import android.view.View;
 

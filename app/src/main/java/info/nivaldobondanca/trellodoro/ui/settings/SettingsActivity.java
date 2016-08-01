@@ -1,4 +1,4 @@
-package info.nivaldobondanca.trellodoro.ui;
+package info.nivaldobondanca.trellodoro.ui.settings;
 
 import android.content.Context;
 import android.content.Intent;
