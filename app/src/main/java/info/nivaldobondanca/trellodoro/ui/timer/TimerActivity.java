@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.TimerActivityBinding;
+import info.nivaldobondanca.trellodoro.viewmodel.TimerViewModel;
 
 /**
  * @author Nivaldo Bondança
@@ -36,7 +36,6 @@ public class TimerActivity extends AppCompatActivity {
 	}
 
 	private FloatingActionButton fab;
-	private boolean playing;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,26 +49,7 @@ public class TimerActivity extends AppCompatActivity {
 
 		setupToolbar(binding);
 
-		fab = binding.fab;
-		updateFabResource();
-		// TODO
-	}
-
-	private void updateFabResource() {
-		if (playing) {
-			fab.setImageResource(R.drawable.ic_pause_to_play);
-		}
-		else {
-			fab.setImageResource(R.drawable.ic_play_to_pause);
-		}
-	}
-
-	public void fabClick(View view) {
-		if (!((AnimatedVectorDrawable) fab.getDrawable()).isRunning()) {
-			updateFabResource();
-			playing = !playing;
-			((AnimatedVectorDrawable) fab.getDrawable()).start();
-		}
+		binding.setViewModel(new TimerViewModel(binding.fab));
 	}
 
 	private void setupToolbar(TimerActivityBinding binding) {

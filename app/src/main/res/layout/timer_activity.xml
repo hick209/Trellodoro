@@ -5,6 +5,12 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	tools:context=".ui.timer.TimerActivity">
 
+	<data>
+		<variable
+			name="viewModel"
+			type="info.nivaldobondanca.trellodoro.viewmodel.TimerViewModel"/>
+	</data>
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -24,22 +30,23 @@
 				app:popupTheme="@style/AppTheme"/>
 		</android.support.design.widget.AppBarLayout>
 
-		<!-- XXX temp -->
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:paddingTop="16dp"
-			android:text="999:59"
-			android:textAppearance="@style/TextAppearance.Timer"/>
+			android:text="@{viewModel.timeText}"
+			android:textAppearance="@style/TextAppearance.Timer"
+			tools:text="24:51"/>
 
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:paddingBottom="16dp"
-			android:text="x pomodoros"
-			android:textAppearance="@style/TextAppearance.Subhead"/>
+			android:text="@{viewModel.informationalText}"
+			android:textAppearance="@style/TextAppearance.Subhead"
+			tools:text="1 pomodoro"/>
 
 		<android.support.design.widget.FloatingActionButton
 			android:id="@+id/fab"
@@ -48,7 +55,6 @@
 			android:layout_gravity="center_horizontal"
 			android:layout_margin="16dp"
 			android:src="@drawable/ic_play"
-			android:onClick="fabClick"/>
+			android:onClick="@{viewModel.actionClick}"/>
 	</LinearLayout>
 </layout>
-
