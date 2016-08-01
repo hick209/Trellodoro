@@ -5,8 +5,10 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +35,9 @@ public class TimerActivity extends AppCompatActivity {
 		activity.startActivity(newIntent(activity, cardName), options.toBundle());
 	}
 
+	private FloatingActionButton fab;
+	private boolean playing;
+
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		supportPostponeEnterTransition();
@@ -45,7 +50,26 @@ public class TimerActivity extends AppCompatActivity {
 
 		setupToolbar(binding);
 
+		fab = binding.fab;
+		updateFabResource();
 		// TODO
+	}
+
+	private void updateFabResource() {
+		if (playing) {
+			fab.setImageResource(R.drawable.ic_pause_to_play);
+		}
+		else {
+			fab.setImageResource(R.drawable.ic_play_to_pause);
+		}
+	}
+
+	public void fabClick(View view) {
+		if (!((AnimatedVectorDrawable) fab.getDrawable()).isRunning()) {
+			updateFabResource();
+			playing = !playing;
+			((AnimatedVectorDrawable) fab.getDrawable()).start();
+		}
 	}
 
 	private void setupToolbar(TimerActivityBinding binding) {

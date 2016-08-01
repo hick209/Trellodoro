@@ -25,10 +25,30 @@
 		</android.support.design.widget.AppBarLayout>
 
 		<!-- XXX temp -->
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@color/app_colorPrimaryLight"/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:paddingTop="16dp"
+			android:text="999:59"
+			android:textAppearance="@style/TextAppearance.Timer"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:paddingBottom="16dp"
+			android:text="x pomodoros"
+			android:textAppearance="@style/TextAppearance.Subhead"/>
+
+		<android.support.design.widget.FloatingActionButton
+			android:id="@+id/fab"
+			android:layout_width="120dp"
+			android:layout_height="120dp"
+			android:layout_gravity="center_horizontal"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_play"
+			android:onClick="fabClick"/>
 	</LinearLayout>
 </layout>
 

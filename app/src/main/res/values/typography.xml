@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="TextAppearance.Caption" parent="TextAppearance.AppCompat.Caption">
+	<style name="TextAppearance.Timer" parent="TextAppearance.AppCompat.Display3">
+		<item name="android:textColor">?android:attr/textColorPrimary</item>
 	</style>
 
-	<style name="TextAppearance.Headline" parent="TextAppearance.AppCompat.Headline">
-	</style>
+	<style name="TextAppearance.Headline" parent="TextAppearance.AppCompat.Headline"/>
+	<style name="TextAppearance.Subhead" parent="TextAppearance.AppCompat.Subhead"/>
+	<style name="TextAppearance.Caption" parent="TextAppearance.AppCompat.Caption"/>
 
 </resources>
