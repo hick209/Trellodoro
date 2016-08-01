@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import info.nivaldobondanca.trellodoro.BR;
+import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
 import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 
 /**
@@ -36,7 +37,7 @@ public class TaskViewModel extends BaseObservable {
 		return new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				listener.onTaskClicked(view, cardName);
+				listener.onTaskClicked((TasksSingleTaskCardBinding) view.getTag(), cardName);
 			}
 		};
 	}

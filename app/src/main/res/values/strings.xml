@@ -5,6 +5,9 @@
 
 	<string name="description_trello">Trello</string>
 
+	<string name="transition_card">Card</string>
+	<string name="transition_cardTitle">Card Title</string>
+
 	<string name="splash_action_connectToTrello">Connect</string>
 
 	<string name="tasks_menu_settings">Settings</string>

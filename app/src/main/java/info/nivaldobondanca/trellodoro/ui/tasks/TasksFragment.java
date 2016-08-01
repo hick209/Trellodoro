@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Toast;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,6 +17,7 @@ import java.util.Random;
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
 import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
+import info.nivaldobondanca.trellodoro.ui.timer.TimerActivity;
 import info.nivaldobondanca.trellodoro.viewmodel.TaskViewModel;
 
 /**
@@ -66,9 +66,8 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 	}
 
 	@Override
-	public void onTaskClicked(View view, CharSequence cardName) {
-		// TODO
-		Toast.makeText(getContext(), "Clicked on " + cardName, Toast.LENGTH_SHORT).show();
+	public void onTaskClicked(TasksSingleTaskCardBinding binding, CharSequence cardName) {
+		TimerActivity.startWithTransitionAnimation(getActivity(), cardName, binding.getRoot(), binding.taskTitle);
 	}
 
 

@@ -1,7 +1,7 @@
 package info.nivaldobondanca.trellodoro.ui;
 
-import android.view.View;
+import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
 
 public interface OnTaskClickListener {
-	void onTaskClicked(View view, CharSequence cardName);
+	void onTaskClicked(TasksSingleTaskCardBinding binding, CharSequence cardName);
 }

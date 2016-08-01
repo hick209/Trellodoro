@@ -71,10 +71,10 @@ public class TasksActivity extends AppCompatActivity {
 					context.getText(R.string.tasks_tabTitle_done),
 			};
 
-			fragments = new Fragment[] {
-					TasksFragment.newInstance(),
-					TasksFragment.newInstance(),
-					TasksFragment.newInstance(),
+			fragments = new Fragment[]{
+					TasksFragment.newInstance(TasksFragment.TASK_LIST_TODO),
+					TasksFragment.newInstance(TasksFragment.TASK_LIST_DOING),
+					TasksFragment.newInstance(TasksFragment.TASK_LIST_DONE),
 			};
 
 			if (fragments.length != COUNT) {
