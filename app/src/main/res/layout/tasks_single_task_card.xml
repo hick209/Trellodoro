@@ -19,14 +19,13 @@
 		android:onClick="@{viewModel.clickListener}"
 		card:contentPadding="16dp">
 
-		<!-- TODO create text styles -->
 		<TextView
 			android:id="@+id/task_title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@{viewModel.cardName}"
-			tools:text="Card name"
-			tools:textSize="32sp"/>
+			android:textAppearance="@style/TextAppearance.Headline"
+			tools:text="Card name"/>
 	</android.support.v7.widget.CardView>
 
 </layout>
