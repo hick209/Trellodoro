@@ -28,6 +28,11 @@
 	<string name="settings_saved">Saved</string>
 	<string name="settings_invalidSelection">Must have a different list for each state</string>
 
+	<string name="timer_start">Start</string>
+	<string name="timer_pause">Pause</string>
+	<string name="timer_resume">Resume</string>
+	<string name="timer_stop">Stop</string>
+
 	<string name="vectorPath_play">
 		M  5,17 L 12,17 L 12,5 L 12,5 L  5,17 z
 		M 12,17 L 19,17 L 12,5 L 12,5 L 12,17 z</string>

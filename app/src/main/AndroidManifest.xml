@@ -32,6 +32,8 @@
 			android:name=".ui.timer.TimerActivity"
 			android:theme="@style/TimerTheme"
 			android:parentActivityName=".ui.tasks.TasksActivity"/>
+
+		<service android:name=".ui.timer.services.TimerService"/>
 	</application>
 
 </manifest>

@@ -7,11 +7,11 @@ import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import info.nivaldobondanca.trellodoro.BR;
 import info.nivaldobondanca.trellodoro.R;
+import info.nivaldobondanca.trellodoro.util.FormatUtils;
 
 /**
  * @author Nivaldo Bondança
@@ -32,11 +32,7 @@ public class TimerViewModel extends BaseObservable {
 
 	@Bindable
 	public CharSequence getTimeText() {
-		final long seconds = TimeUnit.SECONDS.convert(timeLeft, TimeUnit.MILLISECONDS) % 60;
-		final long minutes = TimeUnit.MINUTES.convert(timeLeft, TimeUnit.MILLISECONDS) % 60;
-//		final long millis = (timeLeft % 1000) / 100;
-
-		return String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds);
+		return FormatUtils.millisToSecondsAndMinutesString(timeLeft);
 	}
 
 	@Bindable
