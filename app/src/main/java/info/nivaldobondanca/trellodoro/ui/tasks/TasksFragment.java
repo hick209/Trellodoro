@@ -15,8 +15,8 @@ import java.util.List;
 
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
-import info.nivaldobondanca.trellodoro.model.TrelloCard;
-import info.nivaldobondanca.trellodoro.model.TrelloList;
+import info.nivaldobondanca.trellodoro.model.TrellodoroCard;
+import info.nivaldobondanca.trellodoro.model.TrellodoroList;
 import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerActivity;
 import info.nivaldobondanca.trellodoro.viewmodel.TaskCardViewModel;
@@ -27,7 +27,7 @@ import info.nivaldobondanca.trellodoro.viewmodel.TaskCardViewModel;
 public class TasksFragment extends Fragment implements OnTaskClickListener {
 	private static final String ARG_TASK_LIST_TYPE = "arg.TASK_LIST_TYPE";
 
-	public static TasksFragment newInstance(@TrelloList.Type int taskList) {
+	public static TasksFragment newInstance(@TrellodoroList.Type int taskList) {
 		final Bundle args = new Bundle();
 		args.putInt(ARG_TASK_LIST_TYPE, taskList);
 
@@ -63,14 +63,14 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 		private final LayoutInflater      inflater;
 		private final OnTaskClickListener taskClickListener;
 
-		private List<TrelloCard> cards = Collections.emptyList();
+		private List<TrellodoroCard> cards = Collections.emptyList();
 
 		public TasksAdapter(Context context, OnTaskClickListener taskClickListener) {
 			this.taskClickListener = taskClickListener;
 			inflater = LayoutInflater.from(context);
 		}
 
-		public void setData(@NonNull List<TrelloCard> newCards) {
+		public void setData(@NonNull List<TrellodoroCard> newCards) {
 			cards = newCards;
 			notifyDataSetChanged();
 		}
@@ -81,7 +81,7 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 		}
 
 		@Override
-		public TrelloCard getItem(int position) {
+		public TrellodoroCard getItem(int position) {
 			return cards.get(position);
 		}
 

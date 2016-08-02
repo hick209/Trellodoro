@@ -8,7 +8,7 @@ import android.view.View;
 
 import info.nivaldobondanca.trellodoro.BR;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
-import info.nivaldobondanca.trellodoro.model.TrelloCard;
+import info.nivaldobondanca.trellodoro.model.TrellodoroCard;
 import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 
 /**
@@ -19,20 +19,20 @@ public class TaskCardViewModel extends BaseObservable {
 	private final OnTaskClickListener listener;
 
 	@Nullable
-	private TrelloCard card;
+	private TrellodoroCard card;
 
 	public TaskCardViewModel(@NonNull OnTaskClickListener listener) {
 		this.listener = listener;
 	}
 
-	public void setData(@NonNull TrelloCard card) {
+	public void setData(@NonNull TrellodoroCard card) {
 		this.card = card;
 		notifyPropertyChanged(BR.cardName);
 	}
 
 	@Bindable
 	public CharSequence getCardName() {
-		return card != null ? card.title() : null;
+		return card != null ? card.name() : null;
 	}
 
 	public View.OnClickListener getClickListener() {
@@ -41,7 +41,7 @@ public class TaskCardViewModel extends BaseObservable {
 			public void onClick(View view) {
 				if (card != null) {
 					final TasksSingleTaskCardBinding binding = (TasksSingleTaskCardBinding) view.getTag();
-					listener.onTaskClicked(binding, card.title());
+					listener.onTaskClicked(binding, card.name());
 				}
 			}
 		};
