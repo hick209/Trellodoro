@@ -101,7 +101,7 @@ public class TimerService extends Service {
 				break;
 		}
 
-		return START_NOT_STICKY;
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Nullable

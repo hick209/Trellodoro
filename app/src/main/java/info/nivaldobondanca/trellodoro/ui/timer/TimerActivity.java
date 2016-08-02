@@ -35,44 +35,33 @@ public class TimerActivity extends AppCompatActivity {
 	}
 
 
-	private TimerReceiver timerReceiver;
+	private TimerReceiver  timerReceiver;
+	private TimerViewModel timerViewModel;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		supportPostponeEnterTransition();
-		postponeEnterTransition();
 		super.onCreate(savedInstanceState);
 		final TimerActivityBinding binding =
 				DataBindingUtil.setContentView(this, R.layout.timer_activity);
 
-		setTitle(getIntent().getCharSequenceExtra("extra.CARD_NAME"));
+		final CharSequence title = getIntent().getCharSequenceExtra("extra.CARD_NAME");
+		setTitle(title);
 
 		setupToolbar(binding);
 
-		final TimerViewModel timerViewModel = new TimerViewModel(binding.fab, new TimerViewModel.Callbacks() {
-			boolean running = false;
-
-			@Override
-			public void startTimer(long duration) {
-				running = true;
-				startService(TimerService.startTimer(TimerActivity.this, getTitle(), duration));
-			}
-
-			@Override
-			public void pauseTimer() {
-				running = false;
-				startService(TimerService.stopTimer(TimerActivity.this));
-			}
-
-			@Override
-			public boolean isTimerRunning() {
-				return running;
-			}
-		});
-
+		timerViewModel = new TimerViewModel(title, binding.fab);
 		binding.setViewModel(timerViewModel);
 
 		timerReceiver = new TimerReceiver(timerViewModel);
+
+		bindService(TimerService.bind(this), timerViewModel, BIND_AUTO_CREATE);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(timerViewModel);
 	}
 
 	@Override
@@ -102,7 +91,7 @@ public class TimerActivity extends AppCompatActivity {
 			textViewTitle.setTransitionName(getString(R.string.transition_cardTitle));
 		}
 
-		startPostponedEnterTransition();
+		supportStartPostponedEnterTransition();
 	}
 
 	private View getTextViewTitle(Toolbar toolbar) {

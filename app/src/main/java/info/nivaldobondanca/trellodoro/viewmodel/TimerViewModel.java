@@ -1,8 +1,11 @@
 package info.nivaldobondanca.trellodoro.viewmodel;
 
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
@@ -11,36 +14,37 @@ import java.util.concurrent.TimeUnit;
 import info.nivaldobondanca.trellodoro.BR;
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerReceiver;
+import info.nivaldobondanca.trellodoro.ui.timer.TimerService;
 import info.nivaldobondanca.trellodoro.util.FormatUtils;
 
 /**
  * @author Nivaldo Bondança
  */
 public class TimerViewModel extends BaseObservable
-		implements TimerReceiver.Callbacks {
-	public interface Callbacks {
-		void startTimer(long duration);
-		void pauseTimer();
-
-		boolean isTimerRunning();
-	}
-
+		implements TimerReceiver.Callbacks, ServiceConnection {
 	private static final long POMODORO_LENGTH = TimeUnit.SECONDS.toMillis(10);
 
 
+	private final CharSequence label;
 	private long timeLeft = POMODORO_LENGTH;
+
 	private int pomodoroCount = 0;
 
 	private final FloatingActionButton fab;
-	private final Callbacks            callbacks;
+	private boolean                    fabShowsPause;
 
-	private boolean fabShowsPause;
+	private TimerService.Binder timerBinder;
 
-	public TimerViewModel(FloatingActionButton fab, Callbacks callbacks) {
+	public TimerViewModel(CharSequence label, FloatingActionButton fab) {
+		this.label = label;
 		this.fab = fab;
-		this.callbacks = callbacks;
-		fabShowsPause = callbacks.isTimerRunning();
-		updateFabState();
+
+		// TODO add loading state
+	}
+
+	@Bindable
+	public boolean isLoading() {
+		return timerBinder == null;
 	}
 
 	@Bindable
@@ -72,17 +76,20 @@ public class TimerViewModel extends BaseObservable
 	}
 
 	private void toggleTimerState() {
-		if (callbacks.isTimerRunning()) {
-			callbacks.pauseTimer();
+		if (timerBinder == null) return;
+
+		if (timerBinder.isRunning()) {
+			timerBinder.stopTimer();
 		}
 		else {
-			callbacks.startTimer(timeLeft);
+			timerBinder.startTimer(label, timeLeft);
 		}
-		updateFabState();
 	}
 
 	private void updateFabState() {
-		if (callbacks.isTimerRunning()) {
+		if (timerBinder == null) return;
+
+		if (timerBinder.isRunning()) {
 			if (!fabShowsPause) {
 				fab.setImageResource(R.drawable.ic_play_to_pause);
 				((AnimatedVectorDrawable) fab.getDrawable()).start();
@@ -90,7 +97,7 @@ public class TimerViewModel extends BaseObservable
 			fabShowsPause = true;
 		}
 		else {
-			if (!fabShowsPause) {
+			if (fabShowsPause) {
 				fab.setImageResource(R.drawable.ic_pause_to_play);
 				((AnimatedVectorDrawable) fab.getDrawable()).start();
 			}
@@ -106,6 +113,7 @@ public class TimerViewModel extends BaseObservable
 	@Override
 	public void onUpdateTimer(CharSequence label, long durationMillis) {
 		setTimeLeft(durationMillis);
+		updateFabState();
 	}
 
 	@Override
@@ -121,5 +129,26 @@ public class TimerViewModel extends BaseObservable
 		notifyPropertyChanged(BR.informationalText);
 
 		updateFabState();
+	}
+
+
+	///////////////////////////////
+	/// ServiceConnection
+	///////////////////////////////
+
+	@Override
+	public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+		timerBinder = (TimerService.Binder) iBinder;
+
+		fabShowsPause = timerBinder.isRunning();
+		updateFabState();
+
+		notifyPropertyChanged(BR.loading);
+	}
+
+	@Override
+	public void onServiceDisconnected(ComponentName componentName) {
+		timerBinder = null;
+		notifyPropertyChanged(BR.loading);
 	}
 }

@@ -26,7 +26,7 @@ public class TimerNotificationHelper {
 	}
 
 	public void startNotification(String title, long remainingTimeMillis) {
-		final PendingIntent pauseIntent = PendingIntent.getService(context, 0, TimerService.stopTimer(context), 0);
+		final PendingIntent pauseIntent = PendingIntent.getService(context, 0, TimerService.stopTimer(context), PendingIntent.FLAG_UPDATE_CURRENT);
 
 		notificationBuilder = new NotificationCompat.Builder(context)
 				.setColor(ContextCompat.getColor(context, R.color.app_colorPrimary))
@@ -46,12 +46,13 @@ public class TimerNotificationHelper {
 	}
 
 	public void pauseNotification(String title, long remainingTimeMillis) {
-		final PendingIntent resumeIntent = PendingIntent.getService(context, 0, TimerService.startTimer(context, title, remainingTimeMillis), 0);
+		final PendingIntent resumeIntent = PendingIntent.getService(context, 0, TimerService.startTimer(context, title, remainingTimeMillis), PendingIntent.FLAG_UPDATE_CURRENT);
 
-		notificationBuilder.mActions.clear();
-		notificationBuilder
+		notificationBuilder = new NotificationCompat.Builder(context)
+				.setColor(ContextCompat.getColor(context, R.color.app_colorPrimary))
 				.setSmallIcon(R.drawable.ic_pause)
 				.setOngoing(false)
+				.setContentTitle(title)
 				.setContentText(FormatUtils.millisToSecondsAndMinutesString(remainingTimeMillis))
 				.addAction(R.drawable.ic_play, context.getText(R.string.timer_resume), resumeIntent);
 
