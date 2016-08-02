@@ -20,6 +20,8 @@ import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.SettingsActivityBinding;
 import info.nivaldobondanca.trellodoro.model.TrelloBoard;
 import info.nivaldobondanca.trellodoro.model.TrelloList;
+import info.nivaldobondanca.trellodoro.model.TrellodoroList;
+import info.nivaldobondanca.trellodoro.model.factory.ListFactory;
 
 /**
  * @author Nivaldo Bondança
@@ -95,7 +97,13 @@ public class SettingsActivity extends AppCompatActivity {
 		switch (item.getItemId()) {
 			case R.id.settings_menu_save:
 				if (isSelectionValid()) {
-					// TODO
+					// TODO replace this mock data
+					MockData.saveLists(
+							ListFactory.create((TrelloList) binding.settingsTodo.getSelectedItem(), TrellodoroList.TYPE_TODO),
+							ListFactory.create((TrelloList) binding.settingsDoing.getSelectedItem(), TrellodoroList.TYPE_DOING),
+							ListFactory.create((TrelloList) binding.settingsDone.getSelectedItem(), TrellodoroList.TYPE_DONE)
+					);
+
 					Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show();
 					finish();
 				}
