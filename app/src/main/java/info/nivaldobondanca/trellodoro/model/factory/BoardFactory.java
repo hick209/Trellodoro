@@ -1,6 +1,5 @@
 package info.nivaldobondanca.trellodoro.model.factory;
 
-import java.util.Collections;
 import java.util.List;
 
 import info.nivaldobondanca.trellodoro.model.TrelloBoard;
@@ -11,11 +10,6 @@ import info.nivaldobondanca.trellodoro.model.TrelloList;
  */
 public final class BoardFactory {
 	private BoardFactory() {}
-
-	@Deprecated // TODO Temporary method
-	public static TrelloBoard create(String id, String name) {
-		return create(id, name, Collections.<TrelloList>emptyList());
-	}
 
 	public static TrelloBoard create(String id, String name, List<TrelloList> taskLists) {
 		return new BoardImpl(id, name, taskLists);

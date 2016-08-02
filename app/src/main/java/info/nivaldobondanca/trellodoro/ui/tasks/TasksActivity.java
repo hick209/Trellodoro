@@ -87,9 +87,9 @@ public class TasksActivity extends AppCompatActivity {
 			};
 
 			fragments = new Fragment[]{
-					TasksFragment.newInstance(TrellodoroList.TASK_LIST_TODO),
-					TasksFragment.newInstance(TrellodoroList.TASK_LIST_DOING),
-					TasksFragment.newInstance(TrellodoroList.TASK_LIST_DONE),
+					TasksFragment.newInstance(TrellodoroList.TYPE_TODO),
+					TasksFragment.newInstance(TrellodoroList.TYPE_DOING),
+					TasksFragment.newInstance(TrellodoroList.TYPE_DONE),
 			};
 
 			if (fragments.length != COUNT) {

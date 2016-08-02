@@ -5,5 +5,5 @@ package info.nivaldobondanca.trellodoro.model;
  */
 public interface TrelloCard {
 	String id();
-	String title();
+	String name();
 }

@@ -4,25 +4,26 @@ import android.support.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.List;
 
 /**
  * @author Nivaldo Bondança
  */
-public interface TrellodoroList {
+public interface TrellodoroList extends TrelloList {
+	@Type
+	int type();
+
+
+	int TYPE_NONE  = -1;
+	int TYPE_TODO  = 0;
+	int TYPE_DOING = 1;
+	int TYPE_DONE  = 2;
+
 	@IntDef({
-			TASK_LIST_TODO,
-			TASK_LIST_DOING,
-			TASK_LIST_DONE,
+			TYPE_NONE,
+			TYPE_TODO,
+			TYPE_DOING,
+			TYPE_DONE,
 	})
 	@Retention(RetentionPolicy.SOURCE)
 	@interface Type {}
-
-	int TASK_LIST_TODO  = 0;
-	int TASK_LIST_DOING = 1;
-	int TASK_LIST_DONE  = 2;
-
-	String           id();
-	String           name();
-	List<TrelloCard> cards();
 }
