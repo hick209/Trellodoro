@@ -4,29 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.SettingsActivityBinding;
-import info.nivaldobondanca.trellodoro.model.TrelloBoard;
+import info.nivaldobondanca.trellodoro.model.TrelloCard;
 import info.nivaldobondanca.trellodoro.model.TrelloList;
 import info.nivaldobondanca.trellodoro.model.factory.BoardFactory;
+import info.nivaldobondanca.trellodoro.model.factory.ListFactory;
 
 /**
  * @author Nivaldo Bondança
@@ -90,8 +85,12 @@ public class SettingsActivity extends AppCompatActivity {
 		// TODO replace this mock data
 		boardsAdapter.setData(Arrays.asList(
 				BoardFactory.create("209L", "Hello World!",
-						Arrays.<TrelloList>asList(null)),
-				BoardFactory.create("1001L", "Empty board")
+						Arrays.asList(
+								ListFactory.create("123to7do", "Scratch", Collections.<TrelloCard>emptyList()),
+								ListFactory.create("123doing", "Writing", Collections.<TrelloCard>emptyList()),
+								ListFactory.create("123done1", "Published", Collections.<TrelloCard>emptyList())
+						)),
+				BoardFactory.create("1001L", "Empty board", Collections.<TrelloList>emptyList())
 		));
 	}
 
@@ -119,108 +118,4 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 
-	static abstract class SimpleTextAdapter extends BaseAdapter {
-		private final LayoutInflater inflater;
-
-		public SimpleTextAdapter(Context context) {
-			inflater = LayoutInflater.from(context);
-		}
-
-		public abstract CharSequence getLabel(int position);
-
-		@Override
-		public View getView(int position, View recycledView, ViewGroup parent) {
-			if (recycledView == null) {
-				recycledView = inflater.inflate(android.R.layout.select_dialog_item, parent, false);
-			}
-
-			((TextView) recycledView).setText(getLabel(position));
-
-			return recycledView;
-		}
-	}
-
-	static class TrelloListsAdapter extends SimpleTextAdapter {
-		public TrelloListsAdapter(Context context) {
-			super(context);
-		}
-
-		@Override
-		public int getCount() {
-			return 10;
-		}
-
-		@Override
-		public CharSequence getItem(int position) {
-			// XXX Mock
-			return "List " + position;
-		}
-
-		@Override
-		public CharSequence getLabel(int position) {
-			return getItem(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-	}
-
-	static class TrelloBoardsAdapter extends SimpleTextAdapter {
-		private final TrelloListsAdapter todoAdapter;
-		private final TrelloListsAdapter doingAdapter;
-		private final TrelloListsAdapter doneAdapter;
-
-		private final long[] selectedIds = new long[3];
-
-		private List<TrelloBoard> boards = Collections.emptyList();
-
-		public TrelloBoardsAdapter(Context context,
-		                           TrelloListsAdapter todoAdapter,
-		                           TrelloListsAdapter doingAdapter,
-		                           TrelloListsAdapter doneAdapter) {
-			super(context);
-			this.todoAdapter = todoAdapter;
-			this.doingAdapter = doingAdapter;
-			this.doneAdapter = doneAdapter;
-		}
-
-		public void setData(@NonNull List<TrelloBoard> newData) {
-			boards = newData;
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public int getCount() {
-			return boards.size();
-		}
-
-		@Override
-		public TrelloBoard getItem(int position) {
-			return boards.get(position);
-		}
-
-		@Override
-		public CharSequence getLabel(int position) {
-			return getItem(position).name();
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return getItem(position).id().hashCode();
-		}
-
-		public void updateListSelection(long todoListId, long doingListId, long doneListId) {
-			selectedIds[0] = todoListId;
-			selectedIds[1] = doingListId;
-			selectedIds[2] = doneListId;
-		}
-
-		public boolean isSelectionValid() {
-			return selectedIds[0] != selectedIds[1] &&
-					selectedIds[1] != selectedIds[2] &&
-					selectedIds[2] != selectedIds[0];
-		}
-	}
 }
