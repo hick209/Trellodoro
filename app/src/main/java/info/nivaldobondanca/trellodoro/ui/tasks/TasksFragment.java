@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import java.util.Collections;
 import java.util.List;
 
+import info.nivaldobondanca.trellodoro.MockData;
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
 import info.nivaldobondanca.trellodoro.model.TrellodoroCard;
@@ -49,7 +50,10 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		final TasksAdapter adapter = new TasksAdapter(getContext(), this);
+		@TrellodoroList.Type
+		final int type = getArguments().getInt(ARG_TASK_LIST_TYPE);
+		final TasksAdapter adapter = new TasksAdapter(getContext(), type, this);
+
 		binding.tasksList.setAdapter(adapter);
 	}
 
@@ -65,9 +69,12 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 
 		private List<TrellodoroCard> cards = Collections.emptyList();
 
-		public TasksAdapter(Context context, OnTaskClickListener taskClickListener) {
+		public TasksAdapter(Context context, @TrellodoroList.Type int type, OnTaskClickListener taskClickListener) {
 			this.taskClickListener = taskClickListener;
 			inflater = LayoutInflater.from(context);
+
+			final TrellodoroList list = MockData.listForType(type);
+			setData(MockData.trellodoroCardsForList(list));
 		}
 
 		public void setData(@NonNull List<TrellodoroCard> newCards) {

@@ -1,5 +1,7 @@
 package info.nivaldobondanca.trellodoro;
 
+import android.support.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 import info.nivaldobondanca.trellodoro.model.TrelloBoard;
 import info.nivaldobondanca.trellodoro.model.TrelloCard;
 import info.nivaldobondanca.trellodoro.model.TrelloList;
+import info.nivaldobondanca.trellodoro.model.TrellodoroCard;
 import info.nivaldobondanca.trellodoro.model.TrellodoroList;
 import info.nivaldobondanca.trellodoro.model.factory.BoardFactory;
 import info.nivaldobondanca.trellodoro.model.factory.ListFactory;
@@ -38,15 +41,26 @@ public class MockData {
 		MockData.doneList = doneList;
 	}
 
-	public static TrellodoroList todoList() {
-		return todoList;
+	public static TrellodoroList listForType(@TrellodoroList.Type int type) {
+		switch (type) {
+			case TrellodoroList.TYPE_TODO:
+				return todoList;
+
+			case TrellodoroList.TYPE_DOING:
+				return doingList;
+
+			case TrellodoroList.TYPE_DONE:
+				return doneList;
+
+			case TrellodoroList.TYPE_NONE:
+			default:
+				throw new IllegalArgumentException("Must be a valid type. type = " + type);
+		}
 	}
 
-	public static TrellodoroList doingList() {
-		return doingList;
-	}
+	public static List<TrellodoroCard> trellodoroCardsForList(@Nullable TrellodoroList list) {
+		if (list == null) return Collections.emptyList();
 
-	public static TrellodoroList doneList() {
-		return doneList;
+		return (List) list.cards();
 	}
 }
