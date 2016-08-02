@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.os.IBinder;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +35,10 @@ public class TimerService extends Service {
 				.setAction(ACTION_STOP);
 	}
 
+	public static Intent bind(Context context) {
+		return new Intent(context, TimerService.class);
+	}
+
 	@CheckResult
 	public static long readDuration(@NonNull Intent intent) {
 		return intent.getLongExtra(EXTRA_DURATION, 0L);
@@ -46,6 +49,8 @@ public class TimerService extends Service {
 		return intent.getCharSequenceExtra(EXTRA_LABEL);
 	}
 
+
+	private final Binder binder = new Binder(this);
 
 	private TimerNotificationHelper notificationHelper;
 	private LocalBroadcastManager   broadcastManager;
@@ -101,9 +106,33 @@ public class TimerService extends Service {
 
 	@Nullable
 	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO
-		return null;
+	public Binder onBind(Intent intent) {
+		return binder;
+	}
+
+	public static class Binder extends android.os.Binder {
+		private final TimerService timerService;
+
+		public Binder(TimerService timerService) {
+			this.timerService = timerService;
+		}
+
+		public boolean isRunning() {
+			return timerService.timer != null;
+		}
+
+		public long remainingTime() {
+			return isRunning() ? timerService.timer.getRemainingTime() : 0L;
+		}
+
+		public void startTimer(CharSequence label, long duration) {
+			timerService.startService(TimerService.startTimer(timerService, label, duration));
+		}
+
+		public long stopTimer() {
+			timerService.startService(TimerService.stopTimer(timerService));
+			return remainingTime();
+		}
 	}
 
 

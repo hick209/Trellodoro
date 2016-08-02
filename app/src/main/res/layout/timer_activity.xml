@@ -54,7 +54,7 @@
 			android:layout_height="120dp"
 			android:layout_gravity="center_horizontal"
 			android:layout_margin="16dp"
-			android:src="@drawable/ic_play"
+			android:src="@drawable/ic_play_to_pause"
 			android:onClick="@{viewModel.actionClick}"/>
 	</LinearLayout>
 </layout>
