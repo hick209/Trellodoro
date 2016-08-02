@@ -41,7 +41,7 @@ public class TaskCardViewModel extends BaseObservable {
 			public void onClick(View view) {
 				if (card != null) {
 					final TasksSingleTaskCardBinding binding = (TasksSingleTaskCardBinding) view.getTag();
-					listener.onTaskClicked(binding, card.name());
+					listener.onTaskClicked(binding, card);
 				}
 			}
 		};

@@ -58,8 +58,8 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 	}
 
 	@Override
-	public void onTaskClicked(TasksSingleTaskCardBinding binding, CharSequence cardName) {
-		TimerActivity.startWithTransitionAnimation(getActivity(), cardName, binding.getRoot(), binding.taskTitle);
+	public void onTaskClicked(TasksSingleTaskCardBinding binding, TrellodoroCard card) {
+		TimerActivity.startWithTransitionAnimation(getActivity(), card, binding.getRoot(), binding.taskTitle);
 	}
 
 

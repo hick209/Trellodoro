@@ -6,13 +6,16 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import java.util.concurrent.TimeUnit;
 
 import info.nivaldobondanca.trellodoro.BR;
+import info.nivaldobondanca.trellodoro.MockData;
 import info.nivaldobondanca.trellodoro.R;
+import info.nivaldobondanca.trellodoro.model.TrellodoroCard;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerReceiver;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerService;
 import info.nivaldobondanca.trellodoro.util.FormatUtils;
@@ -24,19 +27,18 @@ public class TimerViewModel extends BaseObservable
 		implements TimerReceiver.Callbacks, ServiceConnection {
 	private static final long POMODORO_LENGTH = TimeUnit.SECONDS.toMillis(10);
 
-
-	private final CharSequence label;
 	private long timeLeft = POMODORO_LENGTH;
 
-	private int pomodoroCount = 0;
+	@NonNull
+	private TrellodoroCard card;
 
 	private final FloatingActionButton fab;
 	private boolean                    fabShowsPause;
 
 	private TimerService.Binder timerBinder;
 
-	public TimerViewModel(CharSequence label, FloatingActionButton fab) {
-		this.label = label;
+	public TimerViewModel(@NonNull TrellodoroCard card, FloatingActionButton fab) {
+		this.card = card;
 		this.fab = fab;
 
 		// TODO add loading state
@@ -54,7 +56,7 @@ public class TimerViewModel extends BaseObservable
 
 	@Bindable
 	public CharSequence getInformationalText() {
-		return pomodoroCount + " pomodoros";
+		return card.pomodoroCount() + " pomodoros";
 	}
 
 	public View.OnClickListener getActionClick() {
@@ -82,7 +84,7 @@ public class TimerViewModel extends BaseObservable
 			timerBinder.stopTimer();
 		}
 		else {
-			timerBinder.startTimer(label, timeLeft);
+			timerBinder.startTimer(card.name(), timeLeft);
 		}
 	}
 
@@ -123,7 +125,7 @@ public class TimerViewModel extends BaseObservable
 
 	@Override
 	public void onFinishTimer(CharSequence label) {
-		pomodoroCount++;
+		card = MockData.updateCard(card, card.totalTimeSpent() + POMODORO_LENGTH, card.pomodoroCount()+1);
 		timeLeft = POMODORO_LENGTH;
 		notifyPropertyChanged(BR.timeText);
 		notifyPropertyChanged(BR.informationalText);

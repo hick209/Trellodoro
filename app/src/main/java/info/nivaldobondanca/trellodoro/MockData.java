@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import info.nivaldobondanca.trellodoro.model.TrelloBoard;
 import info.nivaldobondanca.trellodoro.model.TrelloCard;
@@ -27,8 +28,8 @@ public class MockData {
 							CardFactory.create("card-5", "TODO, XXX, FIXME", 0, 0)
 					)),
 					ListFactory.create("123doing", "Writing", Arrays.<TrelloCard>asList(
-							CardFactory.create("card-3", "Almost there!", 42 * 60 * 1000, 1),
-							CardFactory.create("card-4", "Oh yeah ;)", 0, 0)
+							CardFactory.create("card-3", "Almost there!", 42 * 60 * 1000, 7),
+							CardFactory.create("card-4", "Oh yeah ;)", 0, 1)
 					)),
 					ListFactory.create("123done1", "Published", Arrays.<TrelloCard>asList(
 							CardFactory.create("card-1", "Hello World card!", 5 * 60_000, 1),
@@ -73,5 +74,24 @@ public class MockData {
 		if (list == null) return Collections.emptyList();
 
 		return (List) list.cards();
+	}
+
+	public static TrellodoroCard trellodoroCardForId(String id) {
+		final List<TrelloBoard> boards = trelloBoards();
+		for (TrelloBoard board : boards) {
+			for (TrelloList list : board.lists()) {
+				for (TrelloCard card : list.cards()) {
+					if (Objects.equals(card.id(), id)) {
+						return (TrellodoroCard) card;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static TrellodoroCard updateCard(TrellodoroCard card, long totalTimeSpent, int pomodoroCount) {
+		return CardFactory.create(card, totalTimeSpent, pomodoroCount);
 	}
 }

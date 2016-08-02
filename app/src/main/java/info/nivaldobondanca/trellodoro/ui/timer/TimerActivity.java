@@ -14,24 +14,28 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
+import info.nivaldobondanca.trellodoro.MockData;
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.TimerActivityBinding;
+import info.nivaldobondanca.trellodoro.model.TrellodoroCard;
 import info.nivaldobondanca.trellodoro.viewmodel.TimerViewModel;
 
 /**
  * @author Nivaldo Bondança
  */
 public class TimerActivity extends AppCompatActivity {
-	public static Intent newIntent(Context context, CharSequence cardName) {
+	public static final String EXTRA_CARD_ID = "extra.CARD_ID";
+
+	public static Intent newIntent(Context context, String cardId) {
 		return new Intent(context, TimerActivity.class)
-				.putExtra("extra.CARD_NAME", cardName);
+				.putExtra(EXTRA_CARD_ID, cardId);
 	}
 
-	public static void startWithTransitionAnimation(Activity activity, CharSequence cardName, View cardView, View cardTitle) {
+	public static void startWithTransitionAnimation(Activity activity, TrellodoroCard card, View cardView, View cardTitle) {
 		final ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
 				new Pair<>(cardView, activity.getString(R.string.transition_card)),
 				new Pair<>(cardTitle, activity.getString(R.string.transition_cardTitle)));
-		activity.startActivity(newIntent(activity, cardName), options.toBundle());
+		activity.startActivity(newIntent(activity, card.id()), options.toBundle());
 	}
 
 
@@ -45,12 +49,14 @@ public class TimerActivity extends AppCompatActivity {
 		final TimerActivityBinding binding =
 				DataBindingUtil.setContentView(this, R.layout.timer_activity);
 
-		final CharSequence title = getIntent().getCharSequenceExtra("extra.CARD_NAME");
-		setTitle(title);
+		final String id = getIntent().getStringExtra(EXTRA_CARD_ID);
+		final TrellodoroCard card = MockData.trellodoroCardForId(id);
+
+		setTitle(card.name());
 
 		setupToolbar(binding);
 
-		timerViewModel = new TimerViewModel(title, binding.fab);
+		timerViewModel = new TimerViewModel(card, binding.fab);
 		binding.setViewModel(timerViewModel);
 
 		timerReceiver = new TimerReceiver(timerViewModel);
