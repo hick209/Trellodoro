@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +34,8 @@ public class TimerActivity extends AppCompatActivity {
 		activity.startActivity(newIntent(activity, cardName), options.toBundle());
 	}
 
-	private FloatingActionButton fab;
+
+	private TimerReceiver timerReceiver;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,8 +49,44 @@ public class TimerActivity extends AppCompatActivity {
 
 		setupToolbar(binding);
 
-		binding.setViewModel(new TimerViewModel(binding.fab));
+		final TimerViewModel timerViewModel = new TimerViewModel(binding.fab, new TimerViewModel.Callbacks() {
+			boolean running = false;
+
+			@Override
+			public void startTimer(long duration) {
+				running = true;
+				startService(TimerService.startTimer(TimerActivity.this, getTitle(), duration));
+			}
+
+			@Override
+			public void pauseTimer() {
+				running = false;
+				startService(TimerService.stopTimer(TimerActivity.this));
+			}
+
+			@Override
+			public boolean isTimerRunning() {
+				return running;
+			}
+		});
+
+		binding.setViewModel(timerViewModel);
+
+		timerReceiver = new TimerReceiver(timerViewModel);
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		timerReceiver.register(this);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		timerReceiver.unregister(this);
+	}
+
 
 	private void setupToolbar(TimerActivityBinding binding) {
 		setSupportActionBar(binding.toolbar);

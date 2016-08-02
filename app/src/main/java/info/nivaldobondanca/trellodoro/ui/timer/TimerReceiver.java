@@ -1,10 +1,11 @@
-package info.nivaldobondanca.trellodoro.ui.timer.services;
+package info.nivaldobondanca.trellodoro.ui.timer;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * @author Nivaldo Bondança
@@ -13,6 +14,7 @@ public class TimerReceiver extends BroadcastReceiver {
 	public interface Callbacks {
 		void onUpdateTimer(CharSequence label, long durationMillis);
 		void onStopTimer(CharSequence label);
+		void onFinishTimer(CharSequence label);
 	}
 
 	private final IntentFilter intentFilter;
@@ -29,11 +31,11 @@ public class TimerReceiver extends BroadcastReceiver {
 	}
 
 	public void register(@NonNull Context context) {
-		context.registerReceiver(this, intentFilter);
+		LocalBroadcastManager.getInstance(context).registerReceiver(this, intentFilter);
 	}
 
 	public void unregister(@NonNull Context context) {
-		context.unregisterReceiver(this);
+		LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
 	}
 
 	@Override
@@ -48,10 +50,15 @@ public class TimerReceiver extends BroadcastReceiver {
 				break;
 			}
 
-			case TimerService.ACTION_STOP:
-			case TimerService.ACTION_DONE: {
+			case TimerService.ACTION_STOP: {
 				final CharSequence label = TimerService.readLabel(intent);
 				callbacks.onStopTimer(label);
+				break;
+			}
+			case TimerService.ACTION_DONE: {
+				final CharSequence label = TimerService.readLabel(intent);
+				callbacks.onFinishTimer(label);
+				break;
 			}
 		}
 	}

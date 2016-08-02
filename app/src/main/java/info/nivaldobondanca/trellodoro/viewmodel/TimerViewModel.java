@@ -3,7 +3,6 @@ package info.nivaldobondanca.trellodoro.viewmodel;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
@@ -11,23 +10,37 @@ import java.util.concurrent.TimeUnit;
 
 import info.nivaldobondanca.trellodoro.BR;
 import info.nivaldobondanca.trellodoro.R;
+import info.nivaldobondanca.trellodoro.ui.timer.TimerReceiver;
 import info.nivaldobondanca.trellodoro.util.FormatUtils;
 
 /**
  * @author Nivaldo Bondança
  */
-public class TimerViewModel extends BaseObservable {
+public class TimerViewModel extends BaseObservable
+		implements TimerReceiver.Callbacks {
+	public interface Callbacks {
+		void startTimer(long duration);
+		void pauseTimer();
+
+		boolean isTimerRunning();
+	}
 
 	private static final long POMODORO_LENGTH = TimeUnit.SECONDS.toMillis(10);
 
+
 	private long timeLeft = POMODORO_LENGTH;
 	private int pomodoroCount = 0;
-	private FloatingActionButton fab;
-	private TrellodoroTimer timer;
 
-	public TimerViewModel(FloatingActionButton fab) {
+	private final FloatingActionButton fab;
+	private final Callbacks            callbacks;
+
+	private boolean fabShowsPause;
+
+	public TimerViewModel(FloatingActionButton fab, Callbacks callbacks) {
 		this.fab = fab;
-		updateActionResource();
+		this.callbacks = callbacks;
+		fabShowsPause = callbacks.isTimerRunning();
+		updateFabState();
 	}
 
 	@Bindable
@@ -44,65 +57,69 @@ public class TimerViewModel extends BaseObservable {
 		return new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (!((AnimatedVectorDrawable) fab.getDrawable()).isRunning()) {
+				final AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) fab.getDrawable();
+				if (!drawable.isRunning()) {
 					toggleTimerState();
 				}
 			}
 		};
 	}
 
+
+	public void setTimeLeft(long timeLeft) {
+		this.timeLeft = timeLeft;
+		notifyPropertyChanged(BR.timeText);
+	}
+
 	private void toggleTimerState() {
-		updateActionResource();
-		((AnimatedVectorDrawable) fab.getDrawable()).start();
-		if (timer == null) {
-			startCountDown();
+		if (callbacks.isTimerRunning()) {
+			callbacks.pauseTimer();
 		}
 		else {
-			stopCountDown();
+			callbacks.startTimer(timeLeft);
 		}
+		updateFabState();
 	}
 
-	private void startCountDown() {
-		timer = new TrellodoroTimer(timeLeft);
-		timer.start();
-	}
-
-	private void stopCountDown() {
-		if (timer != null) {
-			timer.cancel();
-			timer = null;
-		}
-	}
-
-	private void updateActionResource() {
-		if (timer == null) {
-			fab.setImageResource(R.drawable.ic_play_to_pause);
+	private void updateFabState() {
+		if (callbacks.isTimerRunning()) {
+			if (!fabShowsPause) {
+				fab.setImageResource(R.drawable.ic_play_to_pause);
+				((AnimatedVectorDrawable) fab.getDrawable()).start();
+			}
+			fabShowsPause = true;
 		}
 		else {
-			fab.setImageResource(R.drawable.ic_pause_to_play);
+			if (!fabShowsPause) {
+				fab.setImageResource(R.drawable.ic_pause_to_play);
+				((AnimatedVectorDrawable) fab.getDrawable()).start();
+			}
+			fabShowsPause = false;
 		}
 	}
 
 
-	private class TrellodoroTimer extends CountDownTimer {
-		public TrellodoroTimer(long millisInFuture) {
-			super(millisInFuture, TimeUnit.MILLISECONDS.toMillis(500));
-		}
+	///////////////////////////////
+	/// TimerService.Callbacks
+	///////////////////////////////
 
-		@Override
-		public void onTick(long millisUntilFinished) {
-			timeLeft = millisUntilFinished;
-			notifyPropertyChanged(BR.timeText);
-		}
+	@Override
+	public void onUpdateTimer(CharSequence label, long durationMillis) {
+		setTimeLeft(durationMillis);
+	}
 
-		@Override
-		public void onFinish() {
-			pomodoroCount++;
-			timeLeft = 0;
-			notifyPropertyChanged(BR.timeText);
-			notifyPropertyChanged(BR.informationalText);
+	@Override
+	public void onStopTimer(CharSequence label) {
+		updateFabState();
+	}
 
-			toggleTimerState();
-		}
+	@Override
+	public void onFinishTimer(CharSequence label) {
+		pomodoroCount++;
+		timeLeft = POMODORO_LENGTH;
+		notifyPropertyChanged(BR.timeText);
+		notifyPropertyChanged(BR.informationalText);
+
+		updateFabState();
 	}
 }
