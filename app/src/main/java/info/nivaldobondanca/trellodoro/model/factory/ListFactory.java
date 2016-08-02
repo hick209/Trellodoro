@@ -9,7 +9,7 @@ import info.nivaldobondanca.trellodoro.model.TrellodoroList;
 /**
  * @author Nivaldo Bondança
  */
-public class ListFactory {
+public final class ListFactory {
 	private ListFactory() {}
 
 	public static TrelloList create(String id, String name, List<TrelloCard> cards) {
@@ -17,11 +17,11 @@ public class ListFactory {
 	}
 
 	public static TrellodoroList create(String id, String name, @TrellodoroList.Type int type, List<TrelloCard> cards) {
-		return new TrellodoroListImpl(id, name, type, cards);
+		return new TrellodoroListImpl(id, name, cards, type);
 	}
 
 	public static TrellodoroList create(TrelloList trelloList, @TrellodoroList.Type int type) {
-		return new TrellodoroListImpl(trelloList, type);
+		return new TrellodoroListImpl(trelloList.id(), trelloList.name(), trelloList.cards(), type);
 	}
 }
 
@@ -56,15 +56,7 @@ class TrellodoroListImpl extends TrelloListImpl implements TrellodoroList {
 	@Type
 	private final int type;
 
-	public TrellodoroListImpl(TrelloList trelloList, int type) {
-		this(trelloList.id(), trelloList.name(), type, trelloList.cards());
-	}
-
-	public TrellodoroListImpl(String id, String name, List<TrelloCard> cards) {
-		this(id, name, TYPE_NONE, cards);
-	}
-
-	public TrellodoroListImpl(String id, String name, @Type int type, List<TrelloCard> cards) {
+	public TrellodoroListImpl(String id, String name, List<TrelloCard> cards, @Type int type) {
 		super(id, name, cards);
 		this.type = type;
 	}
