@@ -67,38 +67,40 @@ public class TimerService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		switch (intent.getAction()) {
-			case ACTION_START: {
-				if (timer != null) {
-					throw new IllegalStateException("There can only be one timer running.");
+		if (intent != null) {
+			switch (intent.getAction()) {
+				case ACTION_START: {
+					if (timer != null) {
+						throw new IllegalStateException("There can only be one timer running.");
+					}
+
+					final long durationMillis = intent.getLongExtra(EXTRA_DURATION, 0);
+					timer = new TrellodoroTimer(durationMillis);
+					label = intent.getCharSequenceExtra(EXTRA_LABEL);
+
+					broadcastManager.sendBroadcast(new Intent(ACTION_START)
+							.putExtra(EXTRA_LABEL, label)
+							.putExtra(EXTRA_DURATION, durationMillis));
+
+					notificationHelper.startNotification(label.toString(), durationMillis);
+
+					timer.start();
+					break;
 				}
 
-				final long durationMillis = intent.getLongExtra(EXTRA_DURATION, 0);
-				timer = new TrellodoroTimer(durationMillis);
-				label = intent.getCharSequenceExtra(EXTRA_LABEL);
+				case ACTION_STOP:
+					if (timer != null) {
+						final long remainingTime = timer.getRemainingTime();
+						timer.cancel();
+						timer = null;
 
-				broadcastManager.sendBroadcast(new Intent(ACTION_START)
-						.putExtra(EXTRA_LABEL, label)
-						.putExtra(EXTRA_DURATION, durationMillis));
+						broadcastManager.sendBroadcast(new Intent(ACTION_STOP)
+								.putExtra(EXTRA_LABEL, label));
 
-				notificationHelper.startNotification(label.toString(), durationMillis);
-
-				timer.start();
-				break;
+						notificationHelper.pauseNotification(label.toString(), remainingTime);
+					}
+					break;
 			}
-
-			case ACTION_STOP:
-				if (timer != null) {
-					final long remainingTime = timer.getRemainingTime();
-					timer.cancel();
-					timer = null;
-
-					broadcastManager.sendBroadcast(new Intent(ACTION_STOP)
-							.putExtra(EXTRA_LABEL, label));
-
-					notificationHelper.pauseNotification(label.toString(), remainingTime);
-				}
-				break;
 		}
 
 		return super.onStartCommand(intent, flags, startId);
@@ -119,6 +121,11 @@ public class TimerService extends Service {
 
 		public boolean isRunning() {
 			return timerService.timer != null;
+		}
+
+		@Nullable
+		public CharSequence label() {
+			return isRunning() ? timerService.label : null;
 		}
 
 		public long remainingTime() {

@@ -16,14 +16,18 @@ import java.util.Locale;
 
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.TasksActivityBinding;
+import info.nivaldobondanca.trellodoro.model.TaskList;
 import info.nivaldobondanca.trellodoro.ui.settings.SettingsActivity;
+import info.nivaldobondanca.trellodoro.ui.timer.TimerService;
+import info.nivaldobondanca.trellodoro.viewmodel.TasksViewModel;
 
 public class TasksActivity extends AppCompatActivity {
-
 	public static Intent newIntent(Context context) {
 		return new Intent(context, TasksActivity.class);
 	}
 
+
+	private TasksViewModel viewModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,17 @@ public class TasksActivity extends AppCompatActivity {
 		// Setup view pager
 		binding.pager.setAdapter(adapter);
 		binding.tabs.setupWithViewPager(binding.pager);
+
+		viewModel = new TasksViewModel();
+		binding.setViewModel(viewModel);
+
+		bindService(TimerService.bind(this), viewModel, BIND_AUTO_CREATE);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(viewModel);
 	}
 
 	@Override
@@ -72,9 +87,9 @@ public class TasksActivity extends AppCompatActivity {
 			};
 
 			fragments = new Fragment[]{
-					TasksFragment.newInstance(TasksFragment.TASK_LIST_TODO),
-					TasksFragment.newInstance(TasksFragment.TASK_LIST_DOING),
-					TasksFragment.newInstance(TasksFragment.TASK_LIST_DONE),
+					TasksFragment.newInstance(TaskList.TASK_LIST_TODO),
+					TasksFragment.newInstance(TaskList.TASK_LIST_DOING),
+					TasksFragment.newInstance(TaskList.TASK_LIST_DONE),
 			};
 
 			if (fragments.length != COUNT) {

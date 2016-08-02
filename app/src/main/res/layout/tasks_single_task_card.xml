@@ -6,7 +6,7 @@
 	<data>
 		<variable
 			name="viewModel"
-			type="info.nivaldobondanca.trellodoro.viewmodel.TaskViewModel"/>
+			type="info.nivaldobondanca.trellodoro.viewmodel.TaskCardViewModel"/>
 	</data>
 
 	<android.support.v7.widget.CardView

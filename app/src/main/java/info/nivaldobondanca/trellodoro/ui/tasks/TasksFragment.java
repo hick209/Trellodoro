@@ -2,7 +2,7 @@ package info.nivaldobondanca.trellodoro.ui.tasks;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,39 +10,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Random;
+import java.util.Collections;
+import java.util.List;
 
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
+import info.nivaldobondanca.trellodoro.model.Card;
+import info.nivaldobondanca.trellodoro.model.TaskList;
 import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerActivity;
-import info.nivaldobondanca.trellodoro.viewmodel.TaskViewModel;
+import info.nivaldobondanca.trellodoro.viewmodel.TaskCardViewModel;
 
 /**
  * @author Nivaldo Bondança
  */
 public class TasksFragment extends Fragment implements OnTaskClickListener {
+	private static final String ARG_TASK_LIST_TYPE = "arg.TASK_LIST_TYPE";
 
-	@IntDef({
-			TASK_LIST_TODO,
-			TASK_LIST_DOING,
-			TASK_LIST_DONE,
-	})
-	@Retention(RetentionPolicy.SOURCE)
-	public @interface TaskList {}
-
-	public static final int TASK_LIST_TODO  = 0;
-	public static final int TASK_LIST_DOING = 1;
-	public static final int TASK_LIST_DONE  = 2;
-
-	private static final String ARG_TASK_LIST = "arg.TASK_LIST";
-
-	public static TasksFragment newInstance(@TaskList int taskList) {
+	public static TasksFragment newInstance(@TaskList.Type int taskList) {
 		final Bundle args = new Bundle();
-		args.putInt(ARG_TASK_LIST, taskList);
-		// TODO create the args
+		args.putInt(ARG_TASK_LIST_TYPE, taskList);
 
 		final TasksFragment fragment = new TasksFragment();
 		fragment.setArguments(args);
@@ -62,7 +49,8 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		binding.tasksList.setAdapter(new TasksAdapter(getContext(), this));
+		final TasksAdapter adapter = new TasksAdapter(getContext(), this);
+		binding.tasksList.setAdapter(adapter);
 	}
 
 	@Override
@@ -75,30 +63,30 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 		private final LayoutInflater      inflater;
 		private final OnTaskClickListener taskClickListener;
 
-		// XXX temporary
-		private final int count;
+		private List<Card> cards = Collections.emptyList();
 
 		public TasksAdapter(Context context, OnTaskClickListener taskClickListener) {
 			this.taskClickListener = taskClickListener;
 			inflater = LayoutInflater.from(context);
-			count = new Random().nextInt(150);
+		}
+
+		public void setData(@NonNull List<Card> newCards) {
+			cards = newCards;
 		}
 
 		@Override
 		public int getCount() {
-			return count;
+			return cards.size();
 		}
 
 		@Override
-		public CharSequence getItem(int position) {
-			// XXX temporary
-			return "Position " + position;
+		public Card getItem(int position) {
+			return cards.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO update this
-			return position;
+			return getItem(position).id();
 		}
 
 		@Override
@@ -111,7 +99,7 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 			final TasksSingleTaskCardBinding binding;
 			if (recycledView == null) {
 				binding = TasksSingleTaskCardBinding.inflate(inflater, container, false);
-				binding.setViewModel(new TaskViewModel(taskClickListener));
+				binding.setViewModel(new TaskCardViewModel(taskClickListener));
 
 				recycledView = binding.getRoot();
 				recycledView.setTag(binding);
