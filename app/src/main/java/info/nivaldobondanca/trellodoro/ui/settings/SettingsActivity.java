@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.SettingsActivityBinding;
+import info.nivaldobondanca.trellodoro.model.TrelloBoard;
 import info.nivaldobondanca.trellodoro.model.TrelloCard;
 import info.nivaldobondanca.trellodoro.model.TrelloList;
 import info.nivaldobondanca.trellodoro.model.factory.BoardFactory;
@@ -32,22 +34,22 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 
-	private View viewRoot;
-	private TrelloBoardsAdapter boardsAdapter;
+	private SettingsActivityBinding binding;
+	private TrelloBoardsAdapter     boardsAdapter;
+
+	private final String[] selectedListIds = new String[3];
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final SettingsActivityBinding binding
-				= DataBindingUtil.setContentView(this, R.layout.settings_activity);
+		binding = DataBindingUtil.setContentView(this, R.layout.settings_activity);
 
 		setSupportActionBar(binding.toolbar);
-		viewRoot = binding.getRoot();
 
 		final TrelloListsAdapter todoAdapter = new TrelloListsAdapter(this);
 		final TrelloListsAdapter doingAdapter = new TrelloListsAdapter(this);
 		final TrelloListsAdapter doneAdapter = new TrelloListsAdapter(this);
-		boardsAdapter = new TrelloBoardsAdapter(this, todoAdapter, doingAdapter, doneAdapter);
+		boardsAdapter = new TrelloBoardsAdapter(this);
 
 		final AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -56,16 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
 			}
 
 			@Override public void onNothingSelected(AdapterView<?> adapterView) {}
-
-			public AdapterView.OnItemSelectedListener updateSelection() {
-				final long todoListId = binding.settingsTodo.getSelectedItemId();
-				final long doingListId = binding.settingsDoing.getSelectedItemId();
-				final long doneListId = binding.settingsDone.getSelectedItemId();
-
-				boardsAdapter.updateListSelection(todoListId, doingListId, doneListId);
-				return this;
-			}
-		}.updateSelection();
+		};
 
 		binding.settingsTodo.setAdapter(todoAdapter);
 		binding.settingsTodo.setOnItemSelectedListener(onItemSelectedListener);
@@ -77,11 +70,20 @@ public class SettingsActivity extends AppCompatActivity {
 		binding.settingsDone.setOnItemSelectedListener(onItemSelectedListener);
 
 		binding.settingsBoard.setAdapter(boardsAdapter);
-	}
+		binding.settingsBoard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+				final TrelloBoard board = boardsAdapter.getItem(position);
+				todoAdapter.setData(board.lists());
+				doingAdapter.setData(board.lists());
+				doneAdapter.setData(board.lists());
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+				updateSelection();
+			}
+
+			@Override public void onNothingSelected(AdapterView<?> adapterView) {}
+		});
+
 		// TODO replace this mock data
 		boardsAdapter.setData(Arrays.asList(
 				BoardFactory.create("209L", "Hello World!",
@@ -104,18 +106,36 @@ public class SettingsActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.settings_menu_save:
-				if (boardsAdapter.isSelectionValid()) {
+				if (isSelectionValid()) {
 					// TODO
 					Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show();
 					finish();
 				}
 				else {
-					Snackbar.make(viewRoot, getText(R.string.settings_invalidSelection), Snackbar.LENGTH_SHORT).show();
+					Snackbar.make(binding.getRoot(), getText(R.string.settings_invalidSelection),
+							Snackbar.LENGTH_SHORT).show();
 				}
 				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void updateSelection() {
+		final TrelloList todoList = (TrelloList) binding.settingsTodo.getSelectedItem();
+		final TrelloList doingList = (TrelloList) binding.settingsDoing.getSelectedItem();
+		final TrelloList doneList = (TrelloList) binding.settingsDone.getSelectedItem();
 
+		selectedListIds[0] = todoList != null ? todoList.id() : null;
+		selectedListIds[1] =  doingList != null ? doingList.id() : null;
+		selectedListIds[2] = doneList != null ? doneList.id() : null;
+	}
+
+	public boolean isSelectionValid() {
+		return selectedListIds[0] != null &&
+				selectedListIds[1] != null &&
+				selectedListIds[2] != null &&
+				!Objects.equals(selectedListIds[0], selectedListIds[1]) &&
+				!Objects.equals(selectedListIds[1], selectedListIds[2]) &&
+				!Objects.equals(selectedListIds[2], selectedListIds[0]);
+	}
 }
