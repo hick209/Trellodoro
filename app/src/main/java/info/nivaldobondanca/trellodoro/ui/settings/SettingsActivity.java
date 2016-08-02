@@ -13,17 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 
+import info.nivaldobondanca.trellodoro.MockData;
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.SettingsActivityBinding;
 import info.nivaldobondanca.trellodoro.model.TrelloBoard;
-import info.nivaldobondanca.trellodoro.model.TrelloCard;
 import info.nivaldobondanca.trellodoro.model.TrelloList;
-import info.nivaldobondanca.trellodoro.model.factory.BoardFactory;
-import info.nivaldobondanca.trellodoro.model.factory.ListFactory;
 
 /**
  * @author Nivaldo Bondança
@@ -85,15 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
 		});
 
 		// TODO replace this mock data
-		boardsAdapter.setData(Arrays.asList(
-				BoardFactory.create("209L", "Hello World!",
-						Arrays.asList(
-								ListFactory.create("123to7do", "Scratch", Collections.<TrelloCard>emptyList()),
-								ListFactory.create("123doing", "Writing", Collections.<TrelloCard>emptyList()),
-								ListFactory.create("123done1", "Published", Collections.<TrelloCard>emptyList())
-						)),
-				BoardFactory.create("1001L", "Empty board", Collections.<TrelloList>emptyList())
-		));
+		boardsAdapter.setData(MockData.trelloBoards());
 	}
 
 	@Override
