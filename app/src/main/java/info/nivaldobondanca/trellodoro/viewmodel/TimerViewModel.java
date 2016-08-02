@@ -2,6 +2,7 @@ package info.nivaldobondanca.trellodoro.viewmodel;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.content.res.Resources;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -32,12 +33,15 @@ public class TimerViewModel extends BaseObservable
 	@NonNull
 	private TrellodoroCard card;
 
+	private Resources resources;
+
 	private final FloatingActionButton fab;
 	private boolean                    fabShowsPause;
 
 	private TimerService.Binder timerBinder;
 
-	public TimerViewModel(@NonNull TrellodoroCard card, FloatingActionButton fab) {
+	public TimerViewModel(Resources resources, @NonNull TrellodoroCard card, FloatingActionButton fab) {
+		this.resources = resources;
 		this.card = card;
 		this.fab = fab;
 
@@ -56,7 +60,7 @@ public class TimerViewModel extends BaseObservable
 
 	@Bindable
 	public CharSequence getInformationalText() {
-		return card.pomodoroCount() + " pomodoros";
+		return resources.getQuantityString(R.plurals.pomodoro, card.pomodoroCount(), card.pomodoroCount());
 	}
 
 	public View.OnClickListener getActionClick() {

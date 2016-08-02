@@ -56,7 +56,7 @@ public class TimerActivity extends AppCompatActivity {
 
 		setupToolbar(binding);
 
-		timerViewModel = new TimerViewModel(card, binding.fab);
+		timerViewModel = new TimerViewModel(getResources(), card, binding.fab);
 		binding.setViewModel(timerViewModel);
 
 		timerReceiver = new TimerReceiver(timerViewModel);
