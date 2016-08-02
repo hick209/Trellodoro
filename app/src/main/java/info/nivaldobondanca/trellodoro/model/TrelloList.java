@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Nivaldo Bondança
  */
-public interface TaskList {
+public interface TrelloList {
 	@IntDef({
 			TASK_LIST_TODO,
 			TASK_LIST_DOING,
@@ -22,10 +22,7 @@ public interface TaskList {
 	int TASK_LIST_DOING = 1;
 	int TASK_LIST_DONE  = 2;
 
-	long       id();
-	List<Card> cards();
-
-	// Extra fields
-	@Type
-	int type();
+	String           id();
+	String           name();
+	List<TrelloCard> cards();
 }

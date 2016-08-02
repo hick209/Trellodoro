@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.SettingsActivityBinding;
+import info.nivaldobondanca.trellodoro.model.TrelloBoard;
+import info.nivaldobondanca.trellodoro.model.TrelloList;
+import info.nivaldobondanca.trellodoro.model.factory.BoardFactory;
 
 /**
  * @author Nivaldo Bondança
@@ -77,6 +85,17 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		// TODO replace this mock data
+		boardsAdapter.setData(Arrays.asList(
+				BoardFactory.create("209L", "Hello World!",
+						Arrays.<TrelloList>asList(null)),
+				BoardFactory.create("1001L", "Empty board")
+		));
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.settings_activity, menu);
 		return true;
@@ -101,7 +120,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 	static abstract class SimpleTextAdapter extends BaseAdapter {
-
 		private final LayoutInflater inflater;
 
 		public SimpleTextAdapter(Context context) {
@@ -156,6 +174,8 @@ public class SettingsActivity extends AppCompatActivity {
 
 		private final long[] selectedIds = new long[3];
 
+		private List<TrelloBoard> boards = Collections.emptyList();
+
 		public TrelloBoardsAdapter(Context context,
 		                           TrelloListsAdapter todoAdapter,
 		                           TrelloListsAdapter doingAdapter,
@@ -166,25 +186,29 @@ public class SettingsActivity extends AppCompatActivity {
 			this.doneAdapter = doneAdapter;
 		}
 
-		@Override
-		public int getCount() {
-			return 5;
+		public void setData(@NonNull List<TrelloBoard> newData) {
+			boards = newData;
+			notifyDataSetChanged();
 		}
 
 		@Override
-		public CharSequence getItem(int position) {
-			// XXX Mock
-			return "Board " + position;
+		public int getCount() {
+			return boards.size();
+		}
+
+		@Override
+		public TrelloBoard getItem(int position) {
+			return boards.get(position);
 		}
 
 		@Override
 		public CharSequence getLabel(int position) {
-			return getItem(position);
+			return getItem(position).name();
 		}
 
 		@Override
 		public long getItemId(int position) {
-			return position;
+			return getItem(position).id().hashCode();
 		}
 
 		public void updateListSelection(long todoListId, long doingListId, long doneListId) {

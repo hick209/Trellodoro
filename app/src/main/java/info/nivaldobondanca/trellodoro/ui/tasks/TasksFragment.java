@@ -15,8 +15,8 @@ import java.util.List;
 
 import info.nivaldobondanca.trellodoro.databinding.TasksFragmentBinding;
 import info.nivaldobondanca.trellodoro.databinding.TasksSingleTaskCardBinding;
-import info.nivaldobondanca.trellodoro.model.Card;
-import info.nivaldobondanca.trellodoro.model.TaskList;
+import info.nivaldobondanca.trellodoro.model.TrelloCard;
+import info.nivaldobondanca.trellodoro.model.TrelloList;
 import info.nivaldobondanca.trellodoro.ui.OnTaskClickListener;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerActivity;
 import info.nivaldobondanca.trellodoro.viewmodel.TaskCardViewModel;
@@ -27,7 +27,7 @@ import info.nivaldobondanca.trellodoro.viewmodel.TaskCardViewModel;
 public class TasksFragment extends Fragment implements OnTaskClickListener {
 	private static final String ARG_TASK_LIST_TYPE = "arg.TASK_LIST_TYPE";
 
-	public static TasksFragment newInstance(@TaskList.Type int taskList) {
+	public static TasksFragment newInstance(@TrelloList.Type int taskList) {
 		final Bundle args = new Bundle();
 		args.putInt(ARG_TASK_LIST_TYPE, taskList);
 
@@ -63,15 +63,16 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 		private final LayoutInflater      inflater;
 		private final OnTaskClickListener taskClickListener;
 
-		private List<Card> cards = Collections.emptyList();
+		private List<TrelloCard> cards = Collections.emptyList();
 
 		public TasksAdapter(Context context, OnTaskClickListener taskClickListener) {
 			this.taskClickListener = taskClickListener;
 			inflater = LayoutInflater.from(context);
 		}
 
-		public void setData(@NonNull List<Card> newCards) {
+		public void setData(@NonNull List<TrelloCard> newCards) {
 			cards = newCards;
+			notifyDataSetChanged();
 		}
 
 		@Override
@@ -80,13 +81,13 @@ public class TasksFragment extends Fragment implements OnTaskClickListener {
 		}
 
 		@Override
-		public Card getItem(int position) {
+		public TrelloCard getItem(int position) {
 			return cards.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			return getItem(position).id();
+			return getItem(position).id().hashCode();
 		}
 
 		@Override

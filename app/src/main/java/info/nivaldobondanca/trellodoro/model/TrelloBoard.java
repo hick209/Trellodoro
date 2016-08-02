@@ -5,7 +5,8 @@ import java.util.List;
 /**
  * @author Nivaldo Bondança
  */
-public interface Board {
-	long           id();
-	List<TaskList> lists();
+public interface TrelloBoard {
+	String           id();
+	String           name();
+	List<TrelloList> lists();
 }

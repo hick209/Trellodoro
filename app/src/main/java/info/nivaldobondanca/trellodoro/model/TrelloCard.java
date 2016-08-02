@@ -3,8 +3,8 @@ package info.nivaldobondanca.trellodoro.model;
 /**
  * @author Nivaldo Bondança
  */
-public interface Card {
-	long         id();
+public interface TrelloCard {
+	String       id();
 	CharSequence title();
 
 	// Extra data

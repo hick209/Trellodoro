@@ -16,7 +16,7 @@ import java.util.Locale;
 
 import info.nivaldobondanca.trellodoro.R;
 import info.nivaldobondanca.trellodoro.databinding.TasksActivityBinding;
-import info.nivaldobondanca.trellodoro.model.TaskList;
+import info.nivaldobondanca.trellodoro.model.TrelloList;
 import info.nivaldobondanca.trellodoro.ui.settings.SettingsActivity;
 import info.nivaldobondanca.trellodoro.ui.timer.TimerService;
 import info.nivaldobondanca.trellodoro.viewmodel.TasksViewModel;
@@ -87,9 +87,9 @@ public class TasksActivity extends AppCompatActivity {
 			};
 
 			fragments = new Fragment[]{
-					TasksFragment.newInstance(TaskList.TASK_LIST_TODO),
-					TasksFragment.newInstance(TaskList.TASK_LIST_DOING),
-					TasksFragment.newInstance(TaskList.TASK_LIST_DONE),
+					TasksFragment.newInstance(TrelloList.TASK_LIST_TODO),
+					TasksFragment.newInstance(TrelloList.TASK_LIST_DOING),
+					TasksFragment.newInstance(TrelloList.TASK_LIST_DONE),
 			};
 
 			if (fragments.length != COUNT) {
