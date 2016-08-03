@@ -23,17 +23,17 @@ public class MockData {
 
 	private static TrelloBoard helloBoard = BoardFactory.create("209L", "Hello World!",
 			Arrays.asList(
-					ListFactory.create("123to7do", "Scratch", Arrays.<TrelloCard>asList(
-							CardFactory.create("card-2", "Do me!", 0, 0),
-							CardFactory.create("card-5", "TODO, XXX, FIXME", 0, 0)
+					ListFactory.create("123to7do", "Scratch", "209L", Arrays.<TrelloCard>asList(
+							CardFactory.create("card-2", "Do me!", "209L", "123to7do", 0, 0),
+							CardFactory.create("card-5", "TODO, XXX, FIXME", "209L", "123to7do", 0, 0)
 					)),
-					ListFactory.create("123doing", "Writing", Arrays.<TrelloCard>asList(
-							CardFactory.create("card-3", "Almost there!", 42 * 60 * 1000, 7),
-							CardFactory.create("card-4", "Oh yeah ;)", 0, 1)
+					ListFactory.create("123doing", "Writing", "209L", Arrays.<TrelloCard>asList(
+							CardFactory.create("card-3", "Almost there!", "209L", "123doing", 42 * 60 * 1000, 7),
+							CardFactory.create("card-4", "Oh yeah ;)", "209L", "123doing", 0, 1)
 					)),
-					ListFactory.create("123done1", "Published", Arrays.<TrelloCard>asList(
-							CardFactory.create("card-1", "Hello World card!", 5 * 60_000, 1),
-							CardFactory.create("card-6", "This is done!", 0, 0)
+					ListFactory.create("123done1", "Published", "209L", Arrays.<TrelloCard>asList(
+							CardFactory.create("card-1", "Hello World card!", "209L", "123done1", 5 * 60_000, 1),
+							CardFactory.create("card-6", "This is done!", "209L", "123done1", 0, 0)
 					))
 			));
 	private static TrelloBoard emptyBoard = BoardFactory.create("1001L", "Empty board", Collections.<TrelloList>emptyList());

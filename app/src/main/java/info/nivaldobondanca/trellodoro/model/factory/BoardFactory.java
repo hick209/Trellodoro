@@ -1,5 +1,7 @@
 package info.nivaldobondanca.trellodoro.model.factory;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 import info.nivaldobondanca.trellodoro.model.TrelloBoard;

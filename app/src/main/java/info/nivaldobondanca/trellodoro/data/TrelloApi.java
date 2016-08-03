@@ -1,5 +1,9 @@
 package info.nivaldobondanca.trellodoro.data;
 
+import java.util.List;
+
+import info.nivaldobondanca.trellodoro.model.TrelloBoard;
+import info.nivaldobondanca.trellodoro.model.TrelloCard;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -26,7 +30,7 @@ public interface TrelloApi {
 		// ?filter=open
 		// &fields=name
 		// &lists=open
-	Observable<Void> boards(
+	Observable<List<TrelloBoard>> boards(
 			@Query("filter") String filter,
 			@Query("fields") String fields,
 			@Query("lists")  String lists
@@ -35,8 +39,8 @@ public interface TrelloApi {
 	@GET("/1/boards/{boardId}/cards")
 	// https://trello.com/1/boards/4eea4ffc91e31d174600004a/cards
 		// ?filter=open
-		// &fields=idList,name,desc
-	Observable<Void> cards(
+		// &fields=idBoard,idList,name,desc
+	Observable<List<TrelloCard>> cards(
 			@Path("boardId") String boardId,
 			@Query("filter") String filter,
 			@Query("fields") String fields

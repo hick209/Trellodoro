@@ -7,6 +7,7 @@ import java.util.List;
  */
 public interface TrelloList {
 	String           id();
+	String           idBoard();
 	String           name();
 	List<TrelloCard> cards();
 }
