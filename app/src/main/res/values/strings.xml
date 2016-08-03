@@ -2,6 +2,7 @@
 <resources>
 
 	<string name="app_name">Trellodoro</string>
+	<string name="app_trelloKey">f5eca466898f391475cfeac26e032fa0</string>
 
 	<string name="description_trello">Trello</string>
 

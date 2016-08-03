@@ -51,8 +51,8 @@ dependencies {
 	compile "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
 
 	// RxCache for caching
-	compile 'com.github.VictorAlbertos.RxCache:core:1.5.5'
-	compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.2'
+	compile 'com.github.VictorAlbertos.RxCache:core:1.6.2'
+	compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
 
 	// Unit testing
 	testCompile 'junit:junit:4.12'
