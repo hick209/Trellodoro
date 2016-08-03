@@ -32,11 +32,27 @@ android {
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 
+	// Android support libs
 	def androidSupportLibVersion = '24.1.1'
 	compile "com.android.support:support-annotations:${androidSupportLibVersion}"
 	compile "com.android.support:appcompat-v7:${androidSupportLibVersion}"
 	compile "com.android.support:design:${androidSupportLibVersion}"
 	compile "com.android.support:cardview-v7:${androidSupportLibVersion}"
+
+	// Rx!
+	compile 'io.reactivex:rxjava:1.1.5'
+	compile 'io.reactivex:rxjava-debug:1.0.3'
+	compile 'io.reactivex:rxandroid:1.2.0'
+
+	// Retrofit -> For API requests
+	def retrofitVersion = '2.1.0'
+	compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+	compile "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
+	compile "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
+
+	// RxCache for caching
+	compile 'com.github.VictorAlbertos.RxCache:core:1.5.5'
+	compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.2'
 
 	// Unit testing
 	testCompile 'junit:junit:4.12'
